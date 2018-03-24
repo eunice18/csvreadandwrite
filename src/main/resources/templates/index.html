@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+    <style type="text/css">
+    	h3,h4,hr{
+    		margin: 10px 0
+    	}
+    </style>
+  </head>
+  <body data-ng-app="myApp">
+    <div class="container" data-ng-controller="AppController">
+      <h3>Add Item</h3>
+      <hr/>
+      
+      <form role="form" data-ng-submit="addItem(newItem)">
+      	<h4>Manufacture Details</h4>
+      	<hr/>
+      	<div class="row">
+			<div class="col-md-4">
+				<div class="form-group">
+					<label>Name</label>
+		            <input class="form-control input-sm" type="text" data-ng-model="newItem.name" />
+				</div>
+	        </div>	
+			<div class="col-md-4">
+				<div class="form-group">
+					<label>Location</label>
+		            <input class="form-control input-sm" type="text" data-ng-model="newItem.ftpLocation" />
+		        </div>
+	        </div>	
+			<div class="col-md-4"></div>	
+		</div>
+      	<h4>Inventory Config</h4>
+      	<hr/>
+      	<div class="row">
+			<div class="col-md-4">
+				<div class="form-group">
+					<label>Brand Name Column Number</label>
+		            <input class="form-control input-sm" type="text" data-ng-model="newItem.inventoryConfig.brandNameColumnNumber" />
+				</div>
+	        </div>	
+			<div class="col-md-4">
+				<div class="form-group">
+					<label>Item Id Column Number</label>
+		            <input class="form-control input-sm" type="text" data-ng-model="newItem.inventoryConfig.itemIdColumnNumber" />
+		        </div>
+	        </div>	
+			<div class="col-md-4">
+				<div class="form-group">
+					<label>Inventory Value Column Number</label>
+		            <input class="form-control input-sm" type="text" data-ng-model="newItem.inventoryConfig.inventoryValueColumnNumber" />
+		        </div>	
+	        </div>	
+	    </div>	
+      	<h4>PRC</h4>
+      	<hr/>
+      	<div class="row">	
+      		<div class="col-md-4">
+				<div class="form-group">
+					<label>Key</label>		            
+				</div>
+	        </div>	
+			<div class="col-md-4">
+				<div class="form-group">
+					<label>Value</label>
+		        </div>
+	        </div>	
+	    </div>
+      	<div class="row" data-ng-repeat="prc in prcs track by $index">	
+      		<div class="col-md-4">
+				<div class="form-group">
+		            <input class="form-control input-sm" type="text" data-ng-model="prc.name" />
+				</div>
+	        </div>	
+			<div class="col-md-4">
+				<div class="form-group">
+		            <input class="form-control input-sm" type="text" data-ng-model="prc.prc" />
+		        </div>
+	        </div>	
+			<div class="col-md-4">
+				<div class="form-group">		            
+		          <span data-ng-if="$index===prcs.length-1" class="input-group-btn">
+		            <button class="btn btn-default input-sm" data-ng-click="addPrc()" type="button" title="Add">
+		              <span class="glyphicon glyphicon-plus"></span>
+		            </button>
+		          </span>		            
+		          <span data-ng-if="$index!==prcs.length-1" class="input-group-btn">		            
+			         <button class="btn btn-danger input-sm" type="button" title="Delete"
+		              data-ng-click="deletePrc(prc)">
+		              <span class="glyphicon glyphicon-trash"></span>
+		            </button>
+		          </span>
+		        </div>
+	        </div>	
+	    </div>
+	    <hr/>
+	        <div class="input-group">
+				<div class="form-group">
+		          <span class="input-group-btn">
+		            <button class="btn btn-default input-sm" type="submit" title="Add">
+		              <span class="glyphicon glyphicon-plus">Add Item</span>
+		            </button>
+		          </span>
+		        </div>	
+	        </div>	
+	    <hr/>	
+      </form>
+      
+      <table data-ng-show="items.length>0" data-ng-table="tableParams" class="table">
+        <thead>
+        <tr>
+            <th class="sortable" data-ng-class="{
+                    'sort-asc': tableParams.isSortBy('name', 'asc'),
+                    'sort-desc': tableParams.isSortBy('name', 'desc')
+                  }"
+                data-ng-click="tableParams.sorting({'name' : tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'})">
+                <div><i class="glyphicon glyphicon-user"></i> Name</div>
+            </th>
+            <th class="text-center">FTP Location</th>
+            <th class="text-center">Last File creation Date</th>
+            <th class="text-center">Brand Name Column No.</th>
+            <th class="text-center">Item Id Column No.</th>
+            <th class="text-center">Inventory Value Column No.</th>
+            <th></th>
+            <th></th>
+        </tr>
+        
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="manufacture in $data">
+            <td data-title="'Name'" data-sortable="'name'">
+                {{manufacture.name}}
+            </td>
+            <td data-title="'ftpLocation'" data-sortable="'ftpLocation'">
+                {{manufacture.ftpLocation}}
+            </td>
+            <td data-title="'ftpLocation'" data-sortable="'ftpLocation'">
+                {{manufacture.lastFileCreationDate | date:'medium'}}
+            </td>
+            <td class="text-center" data-title="'ftpLocation'" data-sortable="'ftpLocation'">
+                {{manufacture.inventoryConfig.brandNameColumnNumber}}
+            </td>
+            <td class="text-center" data-title="'ftpLocation'" data-sortable="'ftpLocation'">
+                {{manufacture.inventoryConfig.itemIdColumnNumber}}
+            </td>
+            <td class="text-center" data-title="'ftpLocation'" data-sortable="'ftpLocation'">
+                {{manufacture.inventoryConfig.inventoryValueColumnNumber}}
+            </td>
+            <td>            
+	            <button class="pull-right btn btn-default" type="button" title="Edit">
+	              <span class="glyphicon glyphicon-edit">Edit</span>
+	            </button>
+	         </td>
+	         <td>
+		         <button class="pull-right btn btn-danger" type="button" title="Delete"
+	              data-ng-click="deleteItem(manufacture)">
+	              <span class="glyphicon glyphicon-trash"></span>
+	            </button>
+	         </td>
+        </tr>
+        </tbody>
+    </table>
+    
+    </div>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-resource.min.js"></script>
+    <script type="text/javascript" src="./app/ng-table.min.js"></script>
+    <script type="text/javascript" src="./app/app.js"></script>
+    <script type="text/javascript" src="./app/controllers.js"></script>
+    <script type="text/javascript" src="./app/services.js"></script>
+  </body>
+</html>
